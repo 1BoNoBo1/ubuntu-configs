@@ -159,6 +159,10 @@ backup_mon_shell() {
     fi
     # Synchronise ~/.mon_shell → repo/mon_shell
     rsync -a --delete "$HOME/.mon_shell/" "$REPO/mon_shell/"
+    echo_color "🔄 Synchronisation de .mon_shell vers $REPO/mon_shell" $CYAN
+    # Synchronise .zshrc et .bashrc
+    rsync -a --delete "$HOME/.zshrc" "$REPO/.zshrc"
+    rsync -a --delete "$HOME/.bashrc" "$REPO/.bashrc"
     (
         cd "$REPO" || exit 1
         git add .
