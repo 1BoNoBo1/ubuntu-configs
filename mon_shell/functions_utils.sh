@@ -4,12 +4,14 @@
 # --------------------------------------------------
 
 # ---------- echo_color ----------
+# ---------- echo_color (rétabli) ----------
 unalias echo_color 2>/dev/null
 echo_color() {
   # Usage : echo_color "Message" $VERT
   local msg="$1" color="$2"
-  printf "%s%s%s\n" "${(P)color}" "$msg" "${RESET}"
+  printf "${color}%s${RESET}\n" "$msg"
 }
+
 
 # ---------- mkalias_color (sécurisée : plus de \ devant les espaces) ----------
 unalias mkalias_color 2>/dev/null
