@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 # ~/.mon_shell/colors.sh  – remplace le contenu par ceci
 autoload -Uz colors && colors   # palette Zsh
 RESET=${reset_color}
