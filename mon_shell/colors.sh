@@ -1,12 +1,12 @@
-# ~/.mon_shell/colors.sh
-# Définition des codes couleur ANSI‑C et exportation.
-# Utilisation : printf "$${VERT}Texte coloré$${RESET}\n"
-RESET=$'\e[0m'    # $${RESET}
-VERT=$'\e[32m'    # $${VERT}...$${RESET}
-ROUGE=$'\e[31m'   # $${ROUGE}...$${RESET}
-JAUNE=$'\e[33m'   # $${JAUNE}...$${RESET}
-BLEU=$'\e[34m'    # $${BLEU}...$${RESET}
-CYAN=$'\e[36m'    # $${CYAN}...$${RESET}
-MAGENTA=$'\e[35m' # $${MAGENTA}...$${RESET}
-GRIS=$'\e[90m'    # $${GRIS}...$${RESET}
+# ~/.mon_shell/colors.sh  – remplace le contenu par ceci
+autoload -Uz colors && colors   # palette Zsh
+RESET=${reset_color}
+
+VERT=$fg[green];   ROUGE=$fg[red];     JAUNE=$fg[yellow]
+BLEU=$fg[blue];    CYAN=$fg[cyan];     MAGENTA=$fg[magenta]
+GRIS=$fg_bold[black]
+
 export RESET VERT ROUGE JAUNE BLEU CYAN MAGENTA GRIS
+
+# Pour les messages d'erreur en rouge et gras
+ERREUR="${ROUGE}\e[1mErreur : ${RESET}"

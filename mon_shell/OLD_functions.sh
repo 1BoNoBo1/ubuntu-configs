@@ -8,31 +8,31 @@ echo_color() {
     printf "${color}%s${RESET}\n" "$message"
 }
 # ===== Fonctions avancées, commentées et colorées ============
-unalias mkalias_color 2>/dev/null # Supprime l'ancien alias s'il existe
+# ---------- mkalias_color (fix espaces/backslash) ----------
+unalias mkalias_color 2>/dev/null
 mkalias_color() {
-    # mkalias_color <nom_alias> <COULEUR> "<commande>" ["message_final"]
-    # ex : mkalias_color maj_systeme VERT "sudo apt update && sudo apt upgrade -y" "✔ Mise à jour terminée"
+  local _name="$1" _color="$2" _cmd="$3" _msg="${4:-}"
+  if [[ -z "$_name" || -z "$_color" || -z "$_cmd" ]]; then
+    echo_color "Usage : mkalias_color nom VAR_COULEUR \"commande\" [message]" $ROUGE
+    return 1
+  fi
 
-    local _name="$1" _color="$2" _cmd="$3" _msg="${4:-}"
-    if [[ -z "$_name" || -z "$_color" || -z "$_cmd" ]]; then
-        echo "Usage : mkalias_color nom_alias VAR_COULEUR \"commande\" [\"message\"]" >&2
-        return 1
-    fi
+  # Sécurise les simples quotes dans le message ( ' → '\'' )
+  local _msg_safe=${_msg//\'/\'\\\'\'}
 
-    # Construction de la ligne alias avec échappement correct.
-    local _line
-    if [[ -n "$_msg" ]]; then
-        _line="alias $_name='$_cmd && printf \"\${${_color}}$_msg\${RESET}\\n\"'"
-    else
-        _line="alias $_name='printf \"\${${_color}}$_cmd\${RESET}\\n\"'"
-    fi
+  local _line
+  if [[ -n "$_msg" ]]; then
+    _line="alias $_name='${_cmd}; printf \"\${${_color}}${_msg_safe}\${RESET}\\n\"'"
+  else
+    _line="alias $_name='${_cmd}'"
+  fi
 
-    # Ajoute l’alias dans ~/.mon_shell/aliases.sh puis recharge.
-    echo "$_line" >> "$HOME/.mon_shell/aliases.sh"
-    source "$HOME/.mon_shell/aliases.sh"
-    echo "✅ Alias \`$_name\` créé."
+  print -r -- "$_line" >> "$HOME/.mon_shell/aliases.sh"
+  source "$HOME/.mon_shell/aliases.sh"
+  echo_color "Alias \`$_name\` créé." $VERT
 }
-# ex: mkalias_color maj_systeme VERT "sudo apt update && sudo apt upgrade -y" "✔ Mise à jour terminée"
+# -----------------------------------------------------------
+# ex: mkalias_color essai BLEU "echo hello" "on dirait que cela fonctionne"
 
 
 # ========== fonctions système ==========
