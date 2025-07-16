@@ -11,32 +11,40 @@ echo_color() {
   local msg="$1" color="$2"
   printf "${color}%s${RESET}\n" "$msg"
 }
-
+# EX: echo_color "Hello, world!" $BLEU
 
 # ---------- mkalias_color (sécurisée : plus de \ devant les espaces) ----------
+#!/usr/bin/env zsh
+# ---------- mkalias_color (version finale, testée) ----------
+# ---------- mkalias_color (simple, comme reload) ----------
 unalias mkalias_color 2>/dev/null
 mkalias_color() {
   local _name="$1" _color="$2" _cmd="$3" _msg="${4:-}"
-  if [[ -z "$_name" || -z "$_color" || -z "$_cmd" ]]; then
-    echo_color "Usage : mkalias_color nom VAR_COULEUR \"commande\" [message]" $ROUGE
+  if [[ -z $_name || -z $_color || -z $_cmd ]]; then
+    printf "${ROUGE}Usage : mkalias_color nom VAR_COULEUR \"commande\" [message]${RESET}\n"
     return 1
   fi
 
-  # Échappe seulement les apostrophes dans le message
+  # On protège les apostrophes dans le message
   local _msg_safe=${_msg//\'/\'\\\'\'}
 
   local _line
-  if [[ -n "$_msg" ]]; then
-    _line="alias $_name='${_cmd}; printf \"\${${_color}}${_msg_safe}\${RESET}\\n\"'"
+  if [[ -n $_msg ]]; then
+    # Même structure que ton alias reload :
+    # '…commande… && printf "${COULEUR}message${RESET}\n"'
+    _line="alias $_name='${_cmd} && printf \"\${${_color}}${_msg_safe}\${RESET}\\n\"'"
   else
     _line="alias $_name='${_cmd}'"
   fi
 
-  print -r -- "$_line" >> "$HOME/.mon_shell/aliases.sh"
+  echo "$_line" >> "$HOME/.mon_shell/aliases.sh"
   source "$HOME/.mon_shell/aliases.sh"
-  echo_color "Alias \`$_name\` créé." $VERT
+  printf "${VERT}Alias \`$_name\` créé.${RESET}\n"
 }
-
+# ----------------------------------------------------------
+# -----------------------------------------------------------
+# -------------------------------------------------------------
+ 
 # ---------- backup_mon_shell ----------
 unalias backup_mon_shell 2>/dev/null
 backup_mon_shell() {
