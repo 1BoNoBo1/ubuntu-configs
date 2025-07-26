@@ -4,7 +4,6 @@
 # --------------------------------------------------
 
 # ---------- echo_color ----------
-# ---------- echo_color (rétabli) ----------
 unalias echo_color 2>/dev/null
 echo_color() {
   # Usage : echo_color "Message" $VERT
@@ -12,11 +11,12 @@ echo_color() {
   printf "${color}%s${RESET}\n" "$msg"
 }
 # EX: echo_color "Hello, world!" $BLEU
-
-# ---------- mkalias_color (sécurisée : plus de \ devant les espaces) ----------
-#!/usr/bin/env zsh
-# ---------- mkalias_color (version finale, testée) ----------
-# ---------- mkalias_color (simple, comme reload) ----------
+# --------------------------------------------------
+# ---------- mkalias_color ----------
+# mkalias_color nom VAR_COULEUR "commande" [message]
+# Crée un alias avec une couleur et un message optionnel.
+# Exemple : mkalias_color reload VERT "source ~/.zshrc" "RECHARGEMENT SHELL"
+# Utilise la variable de couleur définie dans colors.sh.
 unalias mkalias_color 2>/dev/null
 mkalias_color() {
   local _name="$1" _color="$2" _cmd="$3" _msg="${4:-}"
@@ -41,9 +41,6 @@ mkalias_color() {
   source "$HOME/.mon_shell/aliases.sh"
   printf "${VERT}Alias \`$_name\` créé.${RESET}\n"
 }
-# ----------------------------------------------------------
-# -----------------------------------------------------------
-# -------------------------------------------------------------
  
 # ---------- backup_mon_shell ----------
 unalias backup_mon_shell 2>/dev/null
