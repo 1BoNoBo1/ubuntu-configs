@@ -1,4 +1,10 @@
 #!/usr/bin/env zsh
+# 
+
+
+
+
+
 # --------------------------------------------------
 # Utilitaires génériques (couleurs, alias dynamiques, backup)
 # --------------------------------------------------
