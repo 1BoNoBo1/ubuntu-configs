@@ -26,12 +26,14 @@ for f in ~/.mon_shell/*.sh; do source "$f"; done
 Exécutez le script d'installation en tant que root :
 
 ```bash
-sudo ./borg_setup.sh
+sudo ./borg_setup.sh [chemin_relatif]
 ```
 
-Le script crée un dépôt chiffré dans `~/kDrive/INFORMATIQUE/PC_TUF/borgrepo`,
-installe les scripts de sauvegarde/restauration dans `/usr/local/sbin/` et active
-le timer systemd `borg-backup.timer` (tous les jours à 02:30).
+Par défaut, le dépôt est créé dans `~/kDrive/INFORMATIQUE/PC_TUF/borgrepo`.
+Vous pouvez spécifier un autre dossier relatif en argument.
+Le script installe également les utilitaires de sauvegarde/restauration dans
+`/usr/local/sbin/` et active le timer systemd `borg-backup.timer`
+ (tous les jours à 02:30).
 Les journaux se trouvent dans `/var/log/borg_backup.log`.
 
 ## Correctif PipeWire Bluetooth
