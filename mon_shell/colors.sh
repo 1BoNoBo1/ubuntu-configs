@@ -1,8 +1,16 @@
 #!/usr/bin/env zsh
+# ~/.mon_shell/colors.sh
+# Fichier de couleurs pour le shell.
+# Chargé par le fichier .zshrc.
+# --------------------------------------------------
+# ---------- Couleurs de zsh ----------
+# Chargement des couleurs de zsh
+# Utilise les couleurs prédéfinies de zsh.
+# Pour les couleurs personnalisées, on utilise les variables de couleur.
+# --------------------------------------------------
 
-# ~/.mon_shell/colors.sh  – remplace le contenu par ceci
-autoload -Uz colors && colors   # palette Zsh
-RESET=${reset_color}
+autoload -Uz colors && colors   # Charge les couleurs de zsh
+RESET=${reset_color}            # Couleur de réinitialisation
 
 VERT=$fg[green];   ROUGE=$fg[red];     JAUNE=$fg[yellow]
 BLEU=$fg[blue];    CYAN=$fg[cyan];     MAGENTA=$fg[magenta]

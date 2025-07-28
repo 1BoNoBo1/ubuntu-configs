@@ -1,10 +1,4 @@
 #!/usr/bin/env zsh
-# 
-
-
-
-
-
 # --------------------------------------------------
 # Utilitaires génériques (couleurs, alias dynamiques, backup)
 # --------------------------------------------------
@@ -49,6 +43,16 @@ mkalias_color() {
 }
  
 # ---------- backup_mon_shell ----------
+# backup_mon_shell [/chemin/vers/repo/local]
+# Sauvegarde le dossier .mon_shell dans un dépôt Git local ou distant.
+# Si le dépôt n'existe pas, affiche un message d'erreur.
+# Utilise rsync pour synchroniser les fichiers.
+# Nécessite que le dépôt soit déjà initialisé avec git.
+# Exemple d'utilisation : backup_mon_shell ~/my_backup_repo
+# Assure-toi que le dépôt est déjà initialisé avec git.
+# Si le dépôt n'existe pas, affiche un message d'erreur.
+# Si le dépôt n'est pas un dépôt Git, affiche un message d'erreur.
+
 unalias backup_mon_shell 2>/dev/null
 backup_mon_shell() {
   # backup_mon_shell [/chemin/vers/repo/local]
@@ -58,6 +62,11 @@ backup_mon_shell() {
     return 1
   fi
   rsync -a --delete "$HOME/.mon_shell/" "$REPO/mon_shell/"
+  rsync -a --delete "$HOME/.zshrc" "$REPO/" ".zshrc"
+  if [[ $? -ne 0 ]]; then
+    echo_color "❌ Erreur lors de la synchronisation avec $REPO." $ROUGE
+    return 1
+  fi
   (
     cd "$REPO" || return 1
     git add . &&
@@ -66,3 +75,18 @@ backup_mon_shell() {
   )
   echo_color "✅ .mon_shell sauvegardé sur GitHub." $VERT
 }
+
+# ---------- backup_ubuntu_configs ----------
+# Sauvegarde les principaux dossiers/fichiers de configuration utilisateur pour Ubuntu 25.04 qui fonctionne avec GNOME.
+# Propose une liste de dossiers/fichiers à sauvegarder pour faciliter la migration ou la restauration sur un autre PC d'une qualité de code niveau production.
+# Le dépôt cible doit être déjà initialisé avec git qui se trouve dans ~/ubuntu-configs.
+# noms de la fonction backup_ubuntu_configs.
+
+
+
+  
+# ---------- end of functions_utils.sh ----------
+# --------------------------------------------------
+# Source this file in your .zshrc or other scripts to use these functions.
+# Example: source ~/.mon_shell/functions_utils.sh
+# Ensure you have the necessary color variables defined in colors.sh.
