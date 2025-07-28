@@ -62,7 +62,7 @@ backup_mon_shell() {
     return 1
   fi
   rsync -a --delete "$HOME/.mon_shell/" "$REPO/mon_shell/"
-  rsync -a --delete "$HOME/.zshrc" "$REPO/" ".zshrc"
+#  rsync -a --delete "$HOME/.zshrc" "$REPO/" ".zshrc"
   if [[ $? -ne 0 ]]; then
     echo_color "❌ Erreur lors de la synchronisation avec $REPO." $ROUGE
     return 1

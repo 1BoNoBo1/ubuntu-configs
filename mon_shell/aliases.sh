@@ -24,5 +24,3 @@ alias borg-restore-last='LATEST=$(borg list /home/jim/kDrive/INFORMATIQUE/PC_TUF
 alias borg-check-timer='systemctl status borg-backup.timer'
 alias borg-check-repo='ls -ld /home/jim/kDrive/INFORMATIQUE/PC_TUF/borgrepo'
 
-# Fonction de vérification globale
-echo 'Pour utiliser ces alias et fonctions, ajoutez-les à votre mon_shell ou ~/.bashrc puis rechargez votre shell (source mon_shell).'
