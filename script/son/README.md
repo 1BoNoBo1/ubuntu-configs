@@ -1,25 +1,20 @@
-# 🔊 PipeWire Bluetooth Fix – Ubuntu 24.04+ / Debian 12+
+# 🔊 Correctif PipeWire Bluetooth
 
-Corrige les problèmes de saccades ou coupures de son lors de l’utilisation de casques ou enceintes Bluetooth sous PipeWire.
+Ce script corrige les coupures et latences audio rencontrées avec les casques
+Bluetooth lorsque PipeWire est utilisé (Ubuntu 24.04+ / Debian 12+).
 
-## 📦 Installation
+## Installation rapide
 
 ```bash
-git clone https://github.com/1BoNoBo1/ubuntu-configs/script/son/fix_pipewire_bt.sh
-cd pipewire_fix_bluetooth
-chmod +x fix_pipewire_bt.sh
-./fix_pipewire_bt.sh
+# Depuis la racine du dépôt
+./script/son/fix_pipewire_bt.sh
+```
 
+Le script crée un fichier `fix-bt-latence.conf` dans
+`~/.config/pipewire/pipewire-pulse.conf.d/` puis redémarre les services PipeWire
+pour appliquer les réglages.
 
-✅ Ce que fait le script
-Crée une configuration locale dans ~/.config/pipewire/pipewire-pulse.conf.d
+Ces paramètres sont stockés dans votre dossier utilisateur et seront conservés
+lors des mises à jour du système.
 
-Fixe les buffers audio à des valeurs stables (tlength, frag, quantum…)
-
-Redémarre PipeWire proprement
-
-🛡️ Persistant
-Les réglages sont stockés dans ton dossier utilisateur et ne seront pas écrasés par les mises à jour système.
-
-👤 Auteur
-Jean BoNoBo, 2025.
+_Auteur : Jean BoNoBo, 2025._
