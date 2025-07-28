@@ -7,6 +7,11 @@
 # ------------------------------------------------------------
 set -euo pipefail
 
+# Chemin relatif par défaut pour le dépôt Borg dans le home de l'utilisateur
+CHEMIN_RELATIF_DEF="kDrive/INFORMATIQUE/PC_TUF"
+# Permettre la personnalisation via un argument optionnel
+CHEMIN_RELATIF="${1:-$CHEMIN_RELATIF_DEF}"
+
 # -------- Fonctions utilitaires --------
 
 verifier_root() {
@@ -28,7 +33,8 @@ installer_borg() {
 }
 
 preparer_dossiers() {
-  CHEMIN_KDRIVE="$DOSSIER_HOME/kDrive/INFORMATIQUE/PC_TUF"
+  # Dossier qui contiendra le dépôt Borg
+  CHEMIN_KDRIVE="$DOSSIER_HOME/$CHEMIN_RELATIF"
   DEPOT_BORG="$CHEMIN_KDRIVE/borgrepo"
   mkdir -p "$DEPOT_BORG"
   chown -R "$UTILISATEUR":"$UTILISATEUR" "$CHEMIN_KDRIVE"
@@ -66,14 +72,14 @@ initialiser_depot() {
 }
 
 creer_script_backup() {
-  cat > /usr/local/sbin/borg_backup.sh <<'EOS'
+  cat > /usr/local/sbin/borg_backup.sh <<EOS
 #!/bin/bash
 set -euo pipefail
 # shellcheck source=/etc/borgbackup.conf
 source /etc/borgbackup.conf
 export BORG_REPO BORG_PASSPHRASE
 LOG="/var/log/borg_backup.log"
-CHEMIN_KDRIVE="'$CHEMIN_KDRIVE'"
+CHEMIN_KDRIVE="$CHEMIN_KDRIVE"
 
 horodatage() { date '+%Y-%m-%d %H:%M:%S'; }
 
@@ -100,7 +106,7 @@ EOS
 }
 
 creer_script_restore() {
-  cat > /usr/local/sbin/borg_restore.sh <<'EOS'
+  cat > /usr/local/sbin/borg_restore.sh <<EOS
 #!/bin/bash
 set -euo pipefail
 # shellcheck source=/etc/borgbackup.conf
