@@ -1,10 +1,9 @@
 #!/bin/bash
 # ------------------------------------------------------------
 # Script : ~/.mon_setup/aliases.sh
-# Installe et configure Borg Backup avec systemd
-# Dépôt chiffré local dans un dossier synchronisé avec kDrive
-# Usage : sudo ./borg_setup.sh [chemin/vers/repo/local]
-# Compatibilité : Ubuntu ≥ 24.04 / Debian ≥ 12 && bash/zsh
+# Définit des alias et fonctions utiles pour le shell.
+# Usage : source ~/.mon_setup/aliases.sh
+# Compatibilité : Ubuntu ≥ 24.04 / Debian ≥ 12 && bash / zsh
 # Auteur : Jean BoNoBo - 2025
 # ------------------------------------------------------------
 
