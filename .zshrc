@@ -76,9 +76,12 @@ source $ZSH/oh-my-zsh.sh
 # Mon environnement personnalisé
 # >>> ~/.mon_shell loader >>>
 MON_SHELL_DIR="$HOME/.mon_shell"
-[[ -f "$MON_SHELL_DIR/colors.sh"    ]] && source "$MON_SHELL_DIR/colors.sh"
-[[ -f "$MON_SHELL_DIR/aliases.sh"   ]] && source "$MON_SHELL_DIR/aliases.sh"
-[[ -f "$MON_SHELL_DIR/functions.sh" ]] && source "$MON_SHELL_DIR/functions.sh"
+[[ -f "$MON_SHELL_DIR/colors.sh"         ]] && source "$MON_SHELL_DIR/colors.sh"
+[[ -f "$MON_SHELL_DIR/aliases.sh"        ]] && source "$MON_SHELL_DIR/aliases.sh"
+[[ -f "$MON_SHELL_DIR/functions_system.sh" ]] && source "$MON_SHELL_DIR/functions_system.sh"
+[[ -f "$MON_SHELL_DIR/functions_security.sh" ]] && source "$MON_SHELL_DIR/functions_security.sh"
+[[ -f "$MON_SHELL_DIR/functions_utils.sh" ]] && source "$MON_SHELL_DIR/functions_utils.sh"
+[[ -f "$MON_SHELL_DIR/functions_webdav.sh" ]] && source "$MON_SHELL_DIR/functions_webdav.sh"
 # <<< fin loader <<<
 
 

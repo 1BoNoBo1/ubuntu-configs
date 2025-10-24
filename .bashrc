@@ -118,12 +118,15 @@ fi
 ### >>> Chargement de ~/.mon_shell (aliases, fonctions, couleurs) >>>
 MON_SHELL_DIR="$HOME/.mon_shell"
 
-# Charger les couleurs en premier (pour qu’elles soient dispos partout)
-[ -f "$MON_SHELL_DIR/colors.sh"   ] && source "$MON_SHELL_DIR/colors.sh"
+# Charger les couleurs en premier (pour qu'elles soient dispos partout)
+[ -f "$MON_SHELL_DIR/colors.sh"            ] && source "$MON_SHELL_DIR/colors.sh"
 
 # Charger les alias
-[ -f "$MON_SHELL_DIR/aliases.sh"  ] && source "$MON_SHELL_DIR/aliases.sh"
+[ -f "$MON_SHELL_DIR/aliases.sh"           ] && source "$MON_SHELL_DIR/aliases.sh"
 
-# Charger les fonctions
-[ -f "$MON_SHELL_DIR/functions.sh" ] && source "$MON_SHELL_DIR/functions.sh"
+# Charger les fonctions modulaires
+[ -f "$MON_SHELL_DIR/functions_system.sh"  ] && source "$MON_SHELL_DIR/functions_system.sh"
+[ -f "$MON_SHELL_DIR/functions_security.sh"] && source "$MON_SHELL_DIR/functions_security.sh"
+[ -f "$MON_SHELL_DIR/functions_utils.sh"   ] && source "$MON_SHELL_DIR/functions_utils.sh"
+[ -f "$MON_SHELL_DIR/functions_webdav.sh"  ] && source "$MON_SHELL_DIR/functions_webdav.sh"
 ### <<< Fin ~/.mon_shell <<<
