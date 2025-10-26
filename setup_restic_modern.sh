@@ -137,7 +137,7 @@ EOF
     # Créer le fichier d'exclusions
     cat > "/etc/restic_excludes.txt" <<'EOF'
 # Exclusions pour restic
-# Basé sur les exclusions borg existantes
+# Patterns optimisés pour un système moderne
 
 # Caches système
 /home/*/.cache
@@ -164,8 +164,9 @@ Thumbs.db
 /home/*/.xsession-errors*
 
 # Dépôts de sauvegarde eux-mêmes
-*/borgrepo
 */restic-repo
+*/backup
+*/backups
 EOF
 
     chmod 644 "/etc/restic_excludes.txt"
@@ -316,8 +317,8 @@ alias restic-restore='sudo /usr/local/sbin/restic_restore.sh'
 alias restic-timer='systemctl status restic-backup.timer'
 
 # Combinaisons pratiques
-alias backup-status='echo "=== BORG ===" && borg-check-timer; echo "=== RESTIC ===" && restic-timer'
-alias backup-now='echo "Démarrage sauvegarde parallèle..." && borg-backup-now & restic-backup-now & wait'
+alias backup-status='restic-timer'
+alias backup-now='restic-backup-now'
 EOF
 
     chown "$UTILISATEUR":"$UTILISATEUR" "$ALIASES_FILE"
@@ -393,7 +394,7 @@ restic_browser() {
 
 # Log viewer avec fzf
 backup_logs() {
-    local log_file=$(echo -e "/var/log/borg_backup.log\n/var/log/restic_backup.log" | fzf --prompt="Log> ")
+    local log_file=$(echo -e "/var/log/restic_backup.log\n/var/log/restic_restore.log" | fzf --prompt="Log> ")
     if [[ -n "$log_file" ]]; then
         sudo tail -f "$log_file"
     fi
@@ -418,8 +419,8 @@ afficher_resume() {
     echo_color "   restic-list           - Lister les snapshots" $NC
     echo_color "   restic-restore        - Restaurer un snapshot" $NC
     echo_color "   restic_browser        - Navigateur de snapshots (fzf)" $NC
-    echo_color "   backup-status         - Statut borg + restic" $NC
-    echo_color "   backup-now            - Sauvegarde parallèle borg + restic" $NC
+    echo_color "   backup-status         - Statut service restic" $NC
+    echo_color "   backup-now            - Sauvegarde restic immédiate" $NC
 
     echo_color "\n🔧 Configuration adaptative:" $BLUE
     echo_color "   kdrive_backup_prepare - Préparer l'environnement" $NC

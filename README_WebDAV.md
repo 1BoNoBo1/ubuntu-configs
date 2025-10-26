@@ -133,15 +133,15 @@ kdrive_maintenance
 - **Espace** : Monitoring automatique de l'espace disponible
 - **Connectivité** : Test périodique avec `kdrive_sync_test`
 
-## Migration depuis BorgBackup
+## Intégration Backup Moderne
 
-Le système WebDAV prépare la transition :
+Le système WebDAV s'intègre parfaitement avec restic :
 
-1. **Phase actuelle** : BorgBackup → `~/kDrive/INFORMATIQUE/PC_TUF/borgrepo`
-2. **Phase transition** : WebDAV → `~/SAUVEGARDE/kdrive/`
-3. **Phase finale** : Restic → `~/SAUVEGARDE/kdrive/restic-repo/`
+1. **Architecture adaptative** : Local → `~/SAUVEGARDE/local-backup/`
+2. **Mode cloud** : WebDAV → `~/SAUVEGARDE/kdrive/`
+3. **Repository restic** : Lien symbolique → `~/SAUVEGARDE/restic-repo/`
 
-Les alias Borg existants restent fonctionnels pendant la transition.
+Le système commute automatiquement entre local et cloud selon la disponibilité.
 
 ## Support et Documentation
 

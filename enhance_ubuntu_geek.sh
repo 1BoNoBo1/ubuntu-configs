@@ -347,7 +347,7 @@ afficher_resume_final() {
     echo_color "   🔍 Recherche: rg, fd, fzf" $NC
     echo_color "   📁 Navigation: exa, tree, zoxide (z)" $NC
     echo_color "   📊 Monitoring: htop, ncdu, lazygit" $NC
-    echo_color "   💾 Backup: restic-*, borg-*, kdrive_*" $NC
+    echo_color "   💾 Backup: restic-*, backup-*, kdrive_*" $NC
     echo_color "   🛡️ Sécurité: ufw, fail2ban, rkhunter" $NC
 
     echo_color "\n⚡ Actions recommandées:" $YELLOW

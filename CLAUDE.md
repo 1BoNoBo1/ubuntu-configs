@@ -21,11 +21,11 @@ This is a comprehensive Ubuntu/Debian configuration system providing:
   - `functions_utils.sh`: Utility functions, dynamic alias creation, backups
 - **Loading Pattern**: Both `.bashrc` and `.zshrc` source all `~/.mon_shell/*.sh` files
 
-### Backup System (Legacy → Modern)
-- **Current**: BorgBackup with systemd timers → kDrive sync
-- **Target**: restic + WebDAV direct integration to Infomaniak kDrive
-- **Integration**: Shell aliases provide intuitive backup/restore commands
-- **Location**: Migrating from `~/kDrive/INFORMATIQUE/PC_TUF/borgrepo` to `~/SAUVEGARDE/`
+### Modern Backup System
+- **Engine**: restic with AES-256 encryption and deduplication
+- **Storage**: Adaptive local/cloud storage via WebDAV kDrive integration
+- **Automation**: systemd timers with intelligent scheduling
+- **Location**: `~/SAUVEGARDE/restic-repo` (adaptive symlink to local/cloud)
 
 ### Audio/Hardware Support (`script/son/`)
 - PipeWire Bluetooth latency fixes
@@ -50,17 +50,17 @@ analyse_disque                    # Comprehensive disk analysis
 
 ### Backup Operations
 ```bash
-# Current BorgBackup (legacy)
-borg-backup-now                  # Manual backup trigger
-borg-list                       # List available archives
-borg-restore-last               # Restore latest archive
-borg-check-timer                # Verify systemd timer status
+# Modern Restic Backup System
+backup-now                      # Manual backup trigger (restic)
+backup-list                     # List snapshots
+backup-restore                  # Interactive restore
+backup-status                   # Check backup service status
+backup-check                    # Verify repository integrity
 
-# Target restic commands (to be implemented)
-restic-backup-now               # Manual restic backup
-restic-list                     # List snapshots
-restic-restore                  # Interactive restore
+# Advanced Operations
 restic-mount                    # Mount backup as filesystem
+restic-browser                  # Interactive snapshot browser (fzf)
+restic-stats                    # Repository statistics
 ```
 
 ### Security Management
@@ -72,31 +72,31 @@ status_ufw                      # Show detailed firewall status
 bloquer_tout                    # Emergency lockdown mode
 ```
 
-## Refactoring Strategy: Borg → Restic Migration
+## Modern Backup Architecture
 
-### Phase 1: WebDAV Integration
-1. **Install WebDAV tools**: `davfs2` for mounting Infomaniak kDrive
-2. **Create mount point**: `~/SAUVEGARDE/` with automatic mounting
-3. **Configure credentials**: Secure storage in `~/.davfs2/secrets`
-4. **Systemd integration**: Auto-mount service for kDrive WebDAV
+### Core Components
+1. **WebDAV Integration**: `davfs2` for mounting Infomaniak kDrive
+2. **Adaptive Storage**: Automatic switching between local/cloud storage
+3. **Secure Configuration**: Credentials in `~/.davfs2/secrets` (600 permissions)
+4. **Systemd Integration**: Auto-mount service and backup scheduling
 
-### Phase 2: Restic Installation & Configuration
-1. **Install restic**: Latest binary with verification
-2. **Repository initialization**: Encrypted repo in `~/SAUVEGARDE/restic-repo/`
-3. **Configuration files**: `/etc/restic.conf` with environment variables
-4. **Exclude patterns**: Migrate from `/etc/borg_excludes.txt` to restic format
+### Restic Configuration
+1. **Modern Engine**: Latest restic with AES-256 encryption
+2. **Repository**: Encrypted repo in `~/SAUVEGARDE/restic-repo/` (adaptive symlink)
+3. **Configuration**: `/etc/restic.conf` with secure environment variables
+4. **Exclusions**: Optimized patterns in `/etc/restic_excludes.txt`
 
-### Phase 3: Systemd Services Migration
-1. **New service files**: `restic-backup.service` and `restic-backup.timer`
-2. **Script migration**: Convert `/usr/local/sbin/borg_*.sh` to restic equivalents
-3. **Alias updates**: Update `mon_shell/aliases.sh` with restic commands
-4. **Parallel operation**: Run both systems during transition
+### Service Architecture
+1. **Backup Service**: `restic-backup.service` with resource optimization
+2. **Timer Schedule**: Intelligent scheduling with randomized delays
+3. **Shell Integration**: Intuitive aliases and functions
+4. **Monitoring**: Comprehensive logging and status checking
 
-### Phase 4: Enhanced Geek Features
-1. **Interactive tools**: `fzf` integration for backup browsing
-2. **Monitoring**: Prometheus metrics, Grafana dashboards
-3. **Notifications**: Desktop/email alerts for backup status
-4. **Performance**: Parallel backups, compression optimization
+### Enhanced Features
+1. **Interactive Tools**: `fzf` integration for snapshot browsing
+2. **Adaptive Behavior**: Seamless local/cloud switching
+3. **Performance**: Optimized compression and deduplication
+4. **Security**: Multi-layer encryption and access control
 
 ## Modern Tool Integration
 
@@ -119,7 +119,7 @@ sudo apt install fzf ripgrep fd-find bat exa zoxide
 
 ### Critical Files to Maintain
 - `mon_shell/aliases.sh`: Central command shortcuts
-- `borg_setup.sh`: Template for `restic_setup.sh` migration
+- Legacy system replaced by modern restic architecture
 - Shell RC files: Consistent loading pattern across bash/zsh
 
 ### WebDAV Configuration Template
@@ -141,11 +141,11 @@ https://kDrive.infomaniak.com/remote.php/dav/files/USERNAME/ USERNAME PASSWORD
 3. **Use color system**: Employ `echo_color` with standardized color variables
 4. **Test thoroughly**: Verify in both bash and zsh environments
 
-### Backup System Changes
+### Backup System Management
 1. **Test in isolation**: Use separate repository for testing
-2. **Maintain backward compatibility**: Keep existing aliases during transition
-3. **Document changes**: Update both README files and alias comments
-4. **Verify systemd integration**: Test timers and service dependencies
+2. **Adaptive switching**: Use `kdrive_switch_mode` for storage backend changes
+3. **Document changes**: Update README files and function comments
+4. **Service monitoring**: Verify systemd timers and service dependencies
 
 ### Error Handling Standards
 - All scripts use `set -euo pipefail` for strict error handling
@@ -202,6 +202,6 @@ sudo ./setup_restic_modern.sh
 - **Modern navigation**: `z` (zoxide), `exa` instead of `ls`
 - **Enhanced search**: `rg` instead of `grep`, `fd` instead of `find`
 - **Interactive tools**: `fzf` for fuzzy finding, `lazygit` for Git TUI
-- **Backup management**: Parallel borg/restic with adaptive kDrive integration
+- **Backup management**: Modern restic with adaptive kDrive integration
 
 This architecture enables a geek-friendly, highly automated Ubuntu configuration system with modern backup solutions, comprehensive CLI tools, and seamless cloud integration capabilities.
