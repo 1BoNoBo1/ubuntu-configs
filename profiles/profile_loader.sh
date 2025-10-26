@@ -15,7 +15,7 @@ PROFILES_DIR="$HOME/ubuntu-configs/profiles"
 load_machine_profile() {
     # Vérifier que le répertoire des profils existe
     if [[ ! -d "$PROFILES_DIR" ]]; then
-        echo "⚠️  Répertoire des profils introuvable: $PROFILES_DIR"
+        echo "⚠️  Répertoire des profils introuvable" >&2
         return 1
     fi
 
@@ -23,24 +23,48 @@ load_machine_profile() {
     if [[ -f "$PROFILES_DIR/machine_detector.sh" ]]; then
         source "$PROFILES_DIR/machine_detector.sh"
     else
-        echo "⚠️  Détecteur de machine introuvable"
+        echo "⚠️  Détecteur de machine introuvable" >&2
         return 1
     fi
 
     # Détecter la machine
     local profile=$(detecter_machine)
 
-    # Vérifier que le profil existe
-    local profile_config="$PROFILES_DIR/$profile/config.sh"
-
-    if [[ ! -f "$profile_config" ]]; then
-        # Fallback sur le profil default
-        echo "⚠️  Profil $profile introuvable, utilisation du profil default"
+    # Validation du nom de profil (alphanumeric + underscore uniquement)
+    if [[ ! "$profile" =~ ^[a-zA-Z0-9_]+$ ]]; then
+        echo "⚠️  Nom de profil invalide détecté, utilisation du profil default" >&2
         profile="default"
-        profile_config="$PROFILES_DIR/default/config.sh"
     fi
 
-    # Charger le profil
+    # Construction et validation du chemin
+    local profile_config="$PROFILES_DIR/$profile/config.sh"
+
+    # Résolution des chemins réels pour détecter traversée
+    local profile_realpath=$(realpath -m "$profile_config" 2>/dev/null)
+    local profiles_realpath=$(realpath "$PROFILES_DIR" 2>/dev/null)
+
+    # Vérifier que le chemin résolu est bien dans PROFILES_DIR
+    if [[ ! "$profile_realpath" == "$profiles_realpath"/* ]]; then
+        echo "⚠️  Tentative de traversée de chemin détectée, utilisation du profil default" >&2
+        profile="default"
+        profile_config="$PROFILES_DIR/default/config.sh"
+        profile_realpath=$(realpath -m "$profile_config" 2>/dev/null)
+    fi
+
+    # Vérifier que le fichier existe et est un fichier régulier
+    if [[ ! -f "$profile_config" ]]; then
+        # Fallback sur le profil default si pas déjà dessus
+        if [[ "$profile" != "default" ]]; then
+            echo "⚠️  Configuration du profil introuvable, utilisation du profil default" >&2
+            profile="default"
+            profile_config="$PROFILES_DIR/default/config.sh"
+        else
+            echo "❌ Profil default introuvable - installation corrompue" >&2
+            return 1
+        fi
+    fi
+
+    # Vérification finale avant sourcing
     if [[ -f "$profile_config" ]]; then
         source "$profile_config"
 
@@ -50,7 +74,7 @@ load_machine_profile() {
 
         return 0
     else
-        echo "❌ Impossible de charger le profil: $profile"
+        echo "❌ Erreur critique de chargement du profil" >&2
         return 1
     fi
 }
@@ -105,14 +129,48 @@ load_profile_modules() {
             ;;
     esac
 
+    # Whitelist des modules autorisés
+    declare -A VALID_MODULES=(
+        ["utilitaires_systeme.sh"]=1
+        ["outils_fichiers.sh"]=1
+        ["outils_productivite.sh"]=1
+        ["outils_developpeur.sh"]=1
+        ["outils_reseau.sh"]=1
+        ["outils_multimedia.sh"]=1
+        ["aide_memoire.sh"]=1
+        ["raccourcis_pratiques.sh"]=1
+        ["nettoyage_securise.sh"]=1
+        ["chargeur_modules.sh"]=1
+    )
+
     # Charger les modules si définis
     if [[ ${#modules_to_load[@]} -gt 0 ]]; then
         for module_info in "${modules_to_load[@]}"; do
             local module="${module_info%%:*}"
+
+            # Validation contre whitelist
+            if [[ ! "${VALID_MODULES[$module]}" ]]; then
+                echo "⚠️  Module non autorisé ignoré: $module" >&2
+                continue
+            fi
+
+            # Validation du format du nom (pas de traversée de chemin)
+            if [[ ! "$module" =~ ^[a-zA-Z0-9_.-]+\.sh$ ]]; then
+                echo "⚠️  Nom de module invalide: $module" >&2
+                continue
+            fi
+
             local module_path="$HOME/ubuntu-configs/mon_shell/$module"
 
-            if [[ -f "$module_path" ]]; then
+            # Validation du chemin résolu
+            local module_realpath=$(realpath -m "$module_path" 2>/dev/null)
+            local shell_realpath=$(realpath "$HOME/ubuntu-configs/mon_shell" 2>/dev/null)
+
+            # Vérifier que le module est bien dans mon_shell/
+            if [[ "$module_realpath" == "$shell_realpath"/* ]] && [[ -f "$module_path" ]]; then
                 source "$module_path"
+            else
+                echo "⚠️  Module introuvable ou chemin invalide: $module" >&2
             fi
         done
     fi
@@ -238,13 +296,8 @@ switch-profile() {
     fi
 }
 
-# Export des fonctions (compatible bash/zsh)
-if [[ -n "$BASH_VERSION" ]]; then
-    export -f reload-profile
-    export -f list-profiles
-    export -f switch-profile
-    export -f load_complete_environment
-fi
+# Note: Les fonctions sont disponibles sans export dans les fichiers sourcés
+# Export -f retiré pour des raisons de sécurité (risque d'hijacking)
 
 # ==========================================
 # Chargement automatique au sourcing

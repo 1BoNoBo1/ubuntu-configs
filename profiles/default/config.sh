@@ -191,13 +191,8 @@ show-profile() {
     fi
 }
 
-# Export des fonctions (compatible bash/zsh)
-if [[ -n "$BASH_VERSION" ]]; then
-    export -f system-info
-    export -f quick-monitor
-    export -f set-profile
-    export -f show-profile
-fi
+# Note: Les fonctions sont disponibles sans export dans les fichiers sourcés
+# Export -f retiré pour des raisons de sécurité (risque d'hijacking)
 
 # ==========================================
 # Messages de Bienvenue

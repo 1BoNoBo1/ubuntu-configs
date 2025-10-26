@@ -167,13 +167,8 @@ perf-mode() {
     echo "  ⚡ Mode performance activé"
 }
 
-# Export des fonctions (compatible bash/zsh)
-if [[ -n "$BASH_VERSION" ]]; then
-    export -f battery-status
-    export -f quick-status
-    export -f eco-mode
-    export -f perf-mode
-fi
+# Note: Les fonctions sont disponibles sans export dans les fichiers sourcés
+# Export -f retiré pour des raisons de sécurité (risque d'hijacking)
 
 # ==========================================
 # Auto-détection Mode Batterie/Secteur

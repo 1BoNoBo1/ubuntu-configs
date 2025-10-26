@@ -8,13 +8,29 @@
 # Fonction de détection automatique
 detecter_machine() {
     local machine_name=""
+    local valid_profiles=("TuF" "PcDeV" "default")
 
     # Méthode 1 : Fichier de configuration manuel (priorité la plus haute)
     if [[ -f "$HOME/.config/ubuntu-configs/machine_profile" ]]; then
         machine_name=$(cat "$HOME/.config/ubuntu-configs/machine_profile" 2>/dev/null | tr -d '[:space:]')
+
+        # Validation contre whitelist
         if [[ -n "$machine_name" ]]; then
-            echo "$machine_name"
-            return 0
+            local is_valid=false
+            for valid_profile in "${valid_profiles[@]}"; do
+                if [[ "$machine_name" == "$valid_profile" ]]; then
+                    is_valid=true
+                    break
+                fi
+            done
+
+            if [[ "$is_valid" == "true" ]]; then
+                echo "$machine_name"
+                return 0
+            else
+                echo "⚠️ Profil invalide dans le fichier de configuration: $machine_name" >&2
+                # Continue vers la détection automatique
+            fi
         fi
     fi
 
@@ -92,29 +108,40 @@ detecter_type_machine() {
 # Fonction pour créer un profil manuel
 definir_profil_manuel() {
     local profile="$1"
+    local valid_profiles=("TuF" "PcDeV" "default")
 
     if [[ -z "$profile" ]]; then
         echo "Usage: definir_profil_manuel [TuF|PcDeV|default]"
         return 1
     fi
 
-    # Créer le répertoire si nécessaire
-    mkdir -p "$HOME/.config/ubuntu-configs"
+    # Validation contre whitelist
+    local is_valid=false
+    for valid_profile in "${valid_profiles[@]}"; do
+        if [[ "$profile" == "$valid_profile" ]]; then
+            is_valid=true
+            break
+        fi
+    done
 
-    # Écrire le profil
-    echo "$profile" > "$HOME/.config/ubuntu-configs/machine_profile"
+    if [[ "$is_valid" != "true" ]]; then
+        echo "❌ Profil invalide: $profile"
+        echo "   Profils valides: ${valid_profiles[*]}"
+        return 1
+    fi
+
+    # Créer le répertoire avec permissions restreintes
+    install -d -m 700 "$HOME/.config/ubuntu-configs"
+
+    # Écriture atomique avec permissions sécurisées
+    (umask 077 && echo "$profile" > "$HOME/.config/ubuntu-configs/machine_profile")
 
     echo "✅ Profil manuel défini: $profile"
     echo "   Rechargez votre shell pour appliquer les changements."
 }
 
-# Export des fonctions (compatible bash/zsh)
-if [[ -n "$BASH_VERSION" ]]; then
-    export -f detecter_machine
-    export -f afficher_info_machine
-    export -f detecter_type_machine
-    export -f definir_profil_manuel
-fi
+# Note: Les fonctions sont disponibles sans export dans les fichiers sourcés
+# Export -f retiré pour des raisons de sécurité (risque d'hijacking)
 
 # Variable globale pour le profil détecté
 export MACHINE_PROFILE=$(detecter_machine)

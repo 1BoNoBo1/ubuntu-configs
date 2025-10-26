@@ -141,12 +141,8 @@ system-monitor() {
     sensors 2>/dev/null | grep -i "core 0" || echo "  sensors non installé"
 }
 
-# Export des fonctions (compatible bash/zsh)
-if [[ -n "$BASH_VERSION" ]]; then
-    export -f restart-pipewire
-    export -f status-audio
-    export -f system-monitor
-fi
+# Note: Les fonctions sont disponibles sans export dans les fichiers sourcés
+# Export -f retiré pour des raisons de sécurité (risque d'hijacking)
 
 # ==========================================
 # Messages de Bienvenue
