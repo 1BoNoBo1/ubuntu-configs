@@ -303,7 +303,7 @@ alias h='history'
 alias q='exit'
 
 # Navigation rapide
-alias -='cd -'
+# alias -='cd -'  # Commenté: nom d'alias invalide en bash
 alias ~='cd ~'
 
 # Fichiers rapides

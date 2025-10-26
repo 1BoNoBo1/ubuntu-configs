@@ -5,21 +5,111 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Repository Purpose
 
 This is a comprehensive Ubuntu/Debian configuration system providing:
+- **Multi-machine profile system** (`profiles/`) with automatic detection and adaptation
 - **Modular shell environment** (`mon_shell/`) with color-coded functions, aliases, and system utilities
-- **Automated backup system** (transitioning from BorgBackup to restic)
+- **Automated backup system** with restic (AES-256 encryption and deduplication)
 - **System maintenance tools** with integrated security, monitoring, and cleanup functions
 - **Audio/hardware fixes** for modern Ubuntu systems (PipeWire, Bluetooth)
+
+## Multi-Machine Profile System
+
+### Overview
+Automatic profile detection and loading system that adapts configuration based on the machine being used. Supports multiple machines with different hardware and usage patterns.
+
+### Profile Structure (`profiles/`)
+```
+profiles/
+├── machine_detector.sh      # Automatic machine detection
+├── profile_loader.sh         # Orchestrated profile loading
+├── TuF/                      # Desktop profile (gaming/production)
+│   ├── config.sh
+│   └── scripts/
+│       └── fix_pipewire_bt.sh
+├── PcDeV/                    # Ultraportable profile
+│   └── config.sh
+└── default/                  # Universal fallback
+    └── config.sh
+```
+
+### Available Profiles
+
+**TuF (Desktop):**
+- **Type:** Desktop gaming/production
+- **Mode:** PERFORMANCE (all modules loaded)
+- **RAM:** 8GB+
+- **Specific Features:**
+  - PipeWire Bluetooth audio fix
+  - Complete developer tools
+  - Advanced system monitoring
+  - Docker and virtualization support
+- **Commands:** `fix-audio`, `restart-pipewire`, `status-audio`, `system-monitor`
+
+**PcDeV (Ultraportable):**
+- **Type:** Ultraportable laptop
+- **Mode:** MINIMAL (essential modules only)
+- **RAM:** 1-4GB
+- **Specific Features:**
+  - Battery optimization
+  - WiFi/Bluetooth management
+  - Brightness control
+  - Eco/Performance modes
+- **Commands:** `battery`, `eco-mode`, `perf-mode`, `wifi-on/off`, `bt-on/off`, `quick-status`
+
+**default (Universal):**
+- **Type:** Unknown/generic machine
+- **Mode:** STANDARD (auto-detection)
+- **RAM:** Variable
+- **Specific Features:**
+  - Balanced configuration
+  - Automatic resource detection
+  - Universal compatibility
+- **Commands:** `system-info`, `quick-monitor`, `set-profile`, `show-profile`
+
+### Automatic Detection
+Detection priority order:
+1. Manual configuration file (`~/.config/ubuntu-configs/machine_profile`)
+2. Hostname matching (TuF, PcDeV)
+3. Hardware characteristics (battery, RAM, audio devices)
+4. Presence of specific scripts
+5. Fallback to `default` profile
+
+### Profile Management Commands
+```bash
+show-profile          # Display current profile
+list-profiles         # List all available profiles
+set-profile [name]    # Set profile manually (TuF|PcDeV|default)
+switch-profile [name] # Same as set-profile
+reload-profile        # Reload current profile
+```
+
+### Integration
+The profile system integrates with:
+- **Adaptive System:** Resource detection (MINIMAL/STANDARD/PERFORMANCE)
+- **Module Loading:** Selective loading based on profile
+- **Aliases:** Common + profile-specific commands
+- **Shell RC Files:** Automatic loading via `.bashrc` and `.zshrc`
+
+**Documentation:** See [README_PROFILS.md](README_PROFILS.md) for complete guide
 
 ## Architecture Overview
 
 ### Shell Configuration System (`mon_shell/`)
-- **Modular Design**: Separate files for aliases, colors, functions (system, security, utils)
+- **Modular Design**: 10 specialized modules with French naming for clarity
 - **Color System**: Standardized color variables (`$VERT`, `$ROUGE`, etc.) for consistent UI
-- **Function Categories**:
-  - `functions_system.sh`: System maintenance, snapshots, Docker, disk analysis
-  - `functions_security.sh`: UFW firewall management
-  - `functions_utils.sh`: Utility functions, dynamic alias creation, backups
-- **Loading Pattern**: Both `.bashrc` and `.zshrc` source all `~/.mon_shell/*.sh` files
+- **Module Categories**:
+  - `utilitaires_systeme.sh`: System info, monitoring, maintenance
+  - `outils_fichiers.sh`: Smart file management and organization
+  - `outils_productivite.sh`: Notes, Pomodoro, password gen, tasks
+  - `outils_developpeur.sh`: Project analysis, Git tools, dev servers
+  - `outils_reseau.sh`: Network diagnostics, WiFi, connectivity
+  - `outils_multimedia.sh`: Image/video/audio/PDF tools
+  - `aide_memoire.sh`: Interactive help system (Git, system, network)
+  - `raccourcis_pratiques.sh`: Ultra-fast navigation shortcuts
+  - `nettoyage_securise.sh`: Ultra-secure cleanup with 4-level protection
+  - `chargeur_modules.sh`: Intelligent module loading system
+- **Loading Pattern**: Profile-based selective loading via `profile_loader.sh`
+  - Loads modules appropriate to machine profile (minimal/standard/complete)
+  - Integrated with `.bashrc` and `.zshrc` for automatic initialization
 
 ### Modern Backup System
 - **Engine**: restic with AES-256 encryption and deduplication
