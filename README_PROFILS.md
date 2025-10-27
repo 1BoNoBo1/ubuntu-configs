@@ -8,6 +8,33 @@ Le système de profils multi-machines permet de gérer automatiquement différen
 - **Alias spécifiques** : Adaptés au type de machine (portable vs desktop)
 - **Fonctions dédiées** : Outils spécifiques au matériel et usage
 
+---
+
+## 🚀 Guide Rapide
+
+**Nouveau sur le système?** Commencez ici:
+
+1. **Découvrir le Système**
+   - Lisez la section [Profils Disponibles](#-profils-disponibles) ci-dessous
+   - Consultez [Utilisation](#-utilisation) pour les commandes de base
+
+2. **Pour les Développeurs**
+   - Guide complet: [claudedocs/DEVELOPPEUR_PROFILS.md](claudedocs/DEVELOPPEUR_PROFILS.md)
+   - Exemples de code: [claudedocs/EXEMPLES_PROFILS.md](claudedocs/EXEMPLES_PROFILS.md)
+   - API Reference: [claudedocs/API_PROFILS.md](claudedocs/API_PROFILS.md)
+
+3. **Migration depuis Ancien Système**
+   - Guide pas à pas: [claudedocs/MIGRATION_PROFILS.md](claudedocs/MIGRATION_PROFILS.md)
+   - Checklist et rollback inclus
+
+4. **Comprendre l'Architecture**
+   - Design système: [claudedocs/ARCHITECTURE_PROFILS.md](claudedocs/ARCHITECTURE_PROFILS.md)
+   - Sécurité: [claudedocs/SECURITE_PROFILS.md](claudedocs/SECURITE_PROFILS.md)
+
+**Besoin d'aide?** Consultez la [FAQ](#-dépannage) en bas de page ou les exemples pratiques dans [EXEMPLES_PROFILS.md](claudedocs/EXEMPLES_PROFILS.md).
+
+---
+
 ## 📁 Structure
 
 ```
@@ -436,10 +463,51 @@ git commit -m "Personnalisation profils"
 git push
 ```
 
-## 📖 Références
+## 📖 Documentation Complète
+
+### Documentation Technique
+
+- **API de Référence** : [claudedocs/API_PROFILS.md](claudedocs/API_PROFILS.md)
+  - Référence complète de toutes les fonctions
+  - Variables d'environnement
+  - Codes de retour et conventions
+  - Exemples d'utilisation détaillés
+
+- **Architecture Système** : [claudedocs/ARCHITECTURE_PROFILS.md](claudedocs/ARCHITECTURE_PROFILS.md)
+  - Design et composants du système
+  - Flux de données et diagrammes
+  - Patterns de conception utilisés
+  - Points d'extension et intégration
+
+- **Guide Sécurité** : [claudedocs/SECURITE_PROFILS.md](claudedocs/SECURITE_PROFILS.md)
+  - Modèle de menaces et contrôles
+  - Validation des entrées et protection
+  - Tests de sécurité et audit
+  - Réponse aux incidents
+
+### Guides Pratiques
+
+- **Guide Développeur** : [claudedocs/DEVELOPPEUR_PROFILS.md](claudedocs/DEVELOPPEUR_PROFILS.md)
+  - Créer nouveaux profils et modules
+  - Guidelines de code et style
+  - Tests et validation
+  - Workflow de contribution
+
+- **Exemples d'Usage** : [claudedocs/EXEMPLES_PROFILS.md](claudedocs/EXEMPLES_PROFILS.md)
+  - Scénarios utilisateur réels
+  - Workflows quotidiens par profil
+  - Cas d'usage avancés
+  - Dépannage courant
+
+- **Guide Migration** : [claudedocs/MIGRATION_PROFILS.md](claudedocs/MIGRATION_PROFILS.md)
+  - Migration depuis ancien système
+  - Migration pas à pas
+  - Personnalisations et rollback
+  - FAQ migration
+
+### Documentation Connexe
 
 - **Documentation principale** : [CLAUDE.md](CLAUDE.md)
-- **Architecture multi-machines** : [ARCHITECTURE_MULTI_MACHINES.md](ARCHITECTURE_MULTI_MACHINES.md)
 - **Système adaptatif** : [README_Adaptive.md](README_Adaptive.md)
 - **Sécurité nettoyage** : [SECURITE_NETTOYAGE.md](SECURITE_NETTOYAGE.md)
 - **Guide modules** : [GUIDE_MODULES_SIMPLES.md](GUIDE_MODULES_SIMPLES.md)
@@ -455,7 +523,51 @@ Le système de profils s'intègre avec :
 
 ---
 
+## 📚 Index de la Documentation
+
+Pour faciliter la navigation, voici l'ensemble de la documentation organisée par thématique:
+
+### Pour Débuter
+- **Ce fichier (README_PROFILS.md)**: Vue d'ensemble et guide utilisateur
+- **[EXEMPLES_PROFILS.md](claudedocs/EXEMPLES_PROFILS.md)**: Scénarios réels et workflows quotidiens
+- **[MIGRATION_PROFILS.md](claudedocs/MIGRATION_PROFILS.md)**: Migration depuis l'ancien système
+
+### Pour Développer
+- **[DEVELOPPEUR_PROFILS.md](claudedocs/DEVELOPPEUR_PROFILS.md)**: Guide complet développeur
+- **[API_PROFILS.md](claudedocs/API_PROFILS.md)**: Référence API complète
+- **[ARCHITECTURE_PROFILS.md](claudedocs/ARCHITECTURE_PROFILS.md)**: Architecture et design
+
+### Pour Sécuriser
+- **[SECURITE_PROFILS.md](claudedocs/SECURITE_PROFILS.md)**: Sécurité et bonnes pratiques
+- **[SECURITE_NETTOYAGE.md](SECURITE_NETTOYAGE.md)**: Système de nettoyage sécurisé
+
+### Documentation Connexe
+- **[CLAUDE.md](CLAUDE.md)**: Guide principal du projet ubuntu-configs
+- **[README_Adaptive.md](README_Adaptive.md)**: Système adaptatif de détection ressources
+- **[GUIDE_MODULES_SIMPLES.md](GUIDE_MODULES_SIMPLES.md)**: Guide des modules mon_shell
+
+---
+
+## 🎯 Cas d'Usage Rapides
+
+**Je veux...**
+
+- **Changer de profil**: `switch-profile TuF` puis `source ~/.bashrc`
+- **Voir mon profil actuel**: `show-profile`
+- **Lister les profils**: `list-profiles`
+- **Créer un nouveau profil**: Voir [Guide Développeur](claudedocs/DEVELOPPEUR_PROFILS.md#créer-un-nouveau-profil)
+- **Migrer mes personnalisations**: Voir [Guide Migration](claudedocs/MIGRATION_PROFILS.md#migration-de-personnalisations)
+- **Résoudre un problème**: Voir section [Dépannage](#-dépannage) ci-dessus
+- **Comprendre l'architecture**: Voir [Documentation Architecture](claudedocs/ARCHITECTURE_PROFILS.md)
+- **Sécuriser mon système**: Voir [Guide Sécurité](claudedocs/SECURITE_PROFILS.md)
+
+---
+
 **Version :** 1.0
 **Dernière mise à jour :** Octobre 2025
 **Auteur :** ubuntu-configs team
 **Licence :** Projet personnel
+
+---
+
+**Documentation générée avec Claude Code** - Pour toute question ou contribution, consultez le [Guide Développeur](claudedocs/DEVELOPPEUR_PROFILS.md#workflow-de-contribution)
