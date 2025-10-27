@@ -5,6 +5,8 @@ Vous y trouverez notamment :
 
 - **adaptive_ubuntu.sh** : **🆕 système adaptatif intelligent** qui configure Ubuntu selon vos ressources
 - **mon_shell/** : ensemble de fonctions et alias pour personnaliser votre shell.
+- **profiles/** : **🆕 système multi-machines** avec détection automatique et profils adaptés.
+- **Bandeau de statut** : **🆕 affichage permanent** des informations système (tmux/tput).
 - **setup_restic_modern.sh** : installation moderne de restic avec outils CLI.
 - **script/son/** : correctif PipeWire pour le Bluetooth.
 - **enhance_ubuntu_geek.sh** : transformation complète Ubuntu → Système Geek.
@@ -58,6 +60,54 @@ sudo ./adaptive_ubuntu.sh install
 - Intégration parfaite avec mon_shell
 
 📋 **Documentation complète :** [README_Adaptive.md](README_Adaptive.md)
+
+## 🖥️ Système de Profils Multi-Machines (NOUVEAU)
+
+Détection automatique de votre machine et chargement du profil adapté :
+
+```bash
+# Le profil est détecté automatiquement au lancement du shell
+# Pour changer manuellement :
+set-profile TuF      # Desktop avec audio fixes
+set-profile PcDeV    # Ultraportable optimisé
+set-profile default  # Configuration universelle
+```
+
+**Profils disponibles :**
+- **TuF (Desktop)** : Mode PERFORMANCE, fix audio PipeWire, outils complets
+- **PcDeV (Ultraportable)** : Mode MINIMAL, optimisation batterie, WiFi/BT rapide
+- **default (Universel)** : Mode STANDARD adaptatif, compatible tout matériel
+
+**Commandes :**
+- `show-profile` : Afficher le profil actuel
+- `list-profiles` : Lister tous les profils
+- `set-profile [nom]` : Changer de profil
+
+📋 **Documentation complète :** [README_PROFILS.md](README_PROFILS.md)
+
+## 📊 Bandeau de Statut (NOUVEAU)
+
+Affichage permanent des informations système en bas d'écran :
+
+```bash
+# Méthode 1 : tmux (recommandé)
+sudo apt install tmux
+start-tmux-status
+
+# Méthode 2 : tput (sans installation)
+status-banner      # Affichage complet formaté
+bandeau           # Bandeau compact en bas d'écran
+watch-status      # Surveillance continue
+```
+
+**Informations affichées :**
+- 💻 Profil actuel (TuF/PcDeV/default)
+- 🔋 Batterie (portable) ou alimentation (desktop)
+- 💾 Usage RAM (utilisé/total)
+- ⚙️ Charge CPU (load average)
+- ⏰ Heure actuelle
+
+📋 **Documentation complète :** [README_BANDEAU.md](README_BANDEAU.md)
 
 ## Transformation Complète du Système
 
